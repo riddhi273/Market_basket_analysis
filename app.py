@@ -178,10 +178,9 @@ if data_option == "Upload New Dataset":
 
 else:
 
-    dataset = pd.read_pickle(
-        "dataset_small.pkl",
-        compression="gzip"
-    )
+    
+        dataset = pd.read_csv("dataset_small.csv")
+    
 
     dataset = prepare_dataset(dataset)
 

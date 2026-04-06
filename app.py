@@ -178,7 +178,8 @@ if data_option == "Upload New Dataset":
 
 else:
 
-    dataset = pd.read_csv("dataset_small.csv", encoding="latin1")
+   import os
+dataset = pd.read_csv(os.path.join(os.path.dirname(__file__), "dataset_small.csv"), encoding="latin1")
     dataset = prepare_dataset(dataset)
 
     rfm = generate_rfm(dataset)

@@ -178,9 +178,14 @@ if data_option == "Upload New Dataset":
 
 else:
 
-    dataset = pd.read_pickle(
-        "dataset_small.pkl",
-         compression="gzip"
+  import pickle, gzip, pandas as pd
+
+# Load it correctly
+with gzip.open("dataset_small.pkl", "rb") as f:
+    dataset = pickle.load(f)
+
+# Re-save as plain pickle
+dataset.to_pickle("dataset_small.pkl")  # no compression
         
     )
 

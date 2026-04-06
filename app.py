@@ -295,7 +295,7 @@ elif selected == "EDA Analysis":
 
     sales_trend = (
         dataset.set_index('InvoiceDate')
-        .resample('M')['Total_amount']
+        .resample('ME')['Total_amount']
         .sum()
     )
 

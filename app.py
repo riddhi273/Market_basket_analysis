@@ -10,7 +10,7 @@ from sklearn.cluster import KMeans
 # ---------------- PAGE CONFIG ----------------
 st.set_page_config(
     page_title="Retail Analytics Dashboard",
-    page_icon="🛒",
+    page_icon="🛍",
     layout="wide"
 )
 
@@ -178,15 +178,9 @@ if data_option == "Upload New Dataset":
 
 else:
 
-  import pickle, gzip, pandas as pd
-
-# Load it correctly
-with gzip.open("dataset_small.pkl", "rb") as f:
-    dataset = pickle.load(f)
-
-# Re-save as plain pickle
-dataset.to_pickle("dataset_small.pkl")  # no compression
-        
+    dataset = pd.read_pickle(
+        "dataset_small.pkl",
+        compression="gzip"
     )
 
     dataset = prepare_dataset(dataset)

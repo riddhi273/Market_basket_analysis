@@ -9,8 +9,8 @@ from sklearn.cluster import KMeans
 
 # ---------------- PAGE CONFIG ----------------
 st.set_page_config(
-    page_title="Retail Analytics Dashboard",
-    page_icon="🛍",
+    page_title="Market basket analysis",
+    page_icon="🛒",
     layout="wide"
 )
 

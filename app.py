@@ -177,8 +177,8 @@ if data_option == "Upload New Dataset":
         st.stop()
 
     else:
-
-      dataset = pd.read_csv("./dataset_small.csv", encoding="latin1")
+    
+        dataset = pd.read_csv("./dataset_small.csv", encoding="latin1")
         dataset = prepare_dataset(dataset)
 
     rfm = generate_rfm(dataset)

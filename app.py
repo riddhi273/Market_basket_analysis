@@ -178,8 +178,8 @@ if data_option == "Upload New Dataset":
 
     else:
     
-        dataset = pd.read_csv("./dataset_small.csv", encoding="latin1")
-        dataset = prepare_dataset(dataset)
+            dataset = pd.read_csv("./dataset_small.csv", encoding="latin1")
+            dataset = prepare_dataset(dataset)
 
     rfm = generate_rfm(dataset)
     best_rules = generate_rules(dataset)

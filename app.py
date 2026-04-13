@@ -1,7 +1,37 @@
 import streamlit as st
 import pandas as pd
+import sqlite3
 from streamlit_option_menu import option_menu
 from datetime import datetime
+
+# ---------------- LOGIN SYSTEM ----------------
+conn = sqlite3.connect("users.db", check_same_thread=False)
+cursor = conn.cursor()
+
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS users (
+    username TEXT,
+    password TEXT
+)
+""")
+conn.commit()
+
+if "logged_in" not in st.session_state:
+    st.session_state.logged_in = False
+
+def register_user(username, password):
+    cursor.execute(
+        "INSERT INTO users VALUES (?, ?)",
+        (username, password)
+    )
+    conn.commit()
+
+def login_user(username, password):
+    cursor.execute(
+        "SELECT * FROM users WHERE username=? AND password=?",
+        (username, password)
+    )
+    return cursor.fetchone()
 
 # ML / Analytics
 from mlxtend.frequent_patterns import apriori, association_rules
@@ -9,10 +39,54 @@ from sklearn.cluster import KMeans
 
 # ---------------- PAGE CONFIG ----------------
 st.set_page_config(
-    page_title="Retail Analytics Dashboard",
+    page_title="Market Basket Analysis",
     page_icon="🛍",
     layout="wide"
 )
+# ---------------- LOGIN PAGE ----------------
+if not st.session_state.logged_in:
+
+    st.title("🛒 Market Basket Analysis")
+
+    menu = st.sidebar.selectbox(
+        "Menu",
+        ["Login", "Register"]
+    )
+
+    if menu == "Register":
+
+        st.subheader("Create Account")
+
+        new_user = st.text_input("Username")
+        new_pass = st.text_input(
+            "Password",
+            type="password"
+        )
+
+        if st.button("Register"):
+            register_user(new_user, new_pass)
+            st.success("Account created!")
+
+    elif menu == "Login":
+
+        st.subheader("Login")
+
+        user = st.text_input("Username")
+        password = st.text_input(
+            "Password",
+            type="password"
+        )
+
+        if st.button("Login"):
+
+            if login_user(user, password):
+                st.session_state.logged_in = True
+                st.rerun()
+
+            else:
+                st.error("Invalid username or password")
+
+    st.stop()
 
 # ---------------- FUNCTIONS ----------------
 
@@ -114,6 +188,11 @@ def generate_rules(dataset):
     )
 
     return best_rules
+
+# ---------------- SIDEBAR AFTER LOGIN ----------------
+if st.sidebar.button("Logout"):
+    st.session_state.logged_in = False
+    st.rerun()
 
 
 # ---------------- DATA SOURCE ----------------
@@ -220,10 +299,10 @@ selected = option_menu(
 
 if selected == "Home":
 
-    st.title("🛍 Retail Analytics Dashboard")
+    st.title("🛒 Market Basket Analysis")
 
     st.markdown(
-        "Welcome to the **Retail Intelligence System**"
+        "Welcome to the **MBA Intelligence System**"
     )
 
     st.divider()
